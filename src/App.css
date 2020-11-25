@@ -1,0 +1,143 @@
+@media (max-width: 992px) {
+    #nav {
+        display: none;
+    }
+}
+
+@media (min-width: 991px) {
+    #kanct {
+        display: none;
+    }
+}
+@media (min-width: 770px) {
+    #search-literature,
+    #search-literature2 {
+        width: 600px;
+    }
+    #butt,
+    #butt2 {
+        width: 50px;
+        padding: 0;
+        margin-left: 12px;
+    }
+    #logo-wrapper {
+        margin-bottom: 51px;
+    }
+}
+
+@media (max-width: 770px) {
+    #search-literature,
+    #search-literature2 {
+        width: 100%;
+    }
+    #butt,
+    #butt2 {
+        width: 100%;
+        margin: 10px 0 0 0;
+    }
+    #big-logo {
+        width: 100%;
+    }
+    #logo-wrapper {
+        margin-bottom: 30px;
+    }
+}
+
+.nav-text:hover {
+    color: #af2e1c;
+}
+
+.nav-text {
+    font-size: 18px;
+    margin-top: 38px;
+    margin-right: 24px;
+}
+
+#search-literature::placeholder,
+#search-literature2::placeholder,
+#addliterature .form-control::placeholder,
+#signinmodal .form-control::placeholder,
+#signupmodal .form-control::placeholder {
+    color: #fff;
+}
+
+#filter-literature,
+#search-literature,
+#search-literature2,
+#addliterature .form-control,
+#signinmodal .form-control,
+#signupmodal .form-control {
+    height: 50px;
+    background: rgba(210, 210, 210, 0.25) !important;
+    color: #fff;
+    border: 2px solid #bcbcbc;
+}
+
+#addliterature .error {
+    height: 20px;
+    font-size: 12px;
+    color: #ff0018;
+    padding-top: 2px;
+}
+
+#photo-profile {
+    width: 226px;
+    height: 226px;
+    background-color: #fff;
+    background-position: center;
+    background-size: cover;
+    border-radius: 5px;
+}
+
+#toast-show {
+    /* min-width: 400px; */
+    max-width: 700px;
+    position: absolute;
+    margin: auto;
+    bottom: 100px;
+    left: 100px;
+    padding-bottom: 100px;
+    background-color: #464646;
+    padding: 25px 60px;
+    font-size: 24px;
+    border-radius: 5px;
+    color: #469f74;
+    -webkit-transition-property: left;
+    -webkit-transition-duration: 0.5s;
+    -webkit-transition-timing-function: linear;
+    transition-property: left;
+    transition-duration: 0.5s;
+    transition-timing-function: linear;
+}
+
+#toast-hide {
+    /* min-width: 400px; */
+    max-width: 700px;
+    position: absolute;
+    margin: auto;
+    bottom: 100px;
+    left: -50%;
+    padding-bottom: 100px;
+    background-color: #464646;
+    padding: 25px 60px;
+    font-size: 24px;
+    border-radius: 5px;
+    color: #469f74;
+    -webkit-transition-property: left;
+    -webkit-transition-duration: 0.5s;
+    -webkit-transition-timing-function: linear;
+    transition-property: left;
+    transition-duration: 0.5s;
+    transition-timing-function: linear;
+}
+
+/* #loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.61);
+    text-align: center;
+    z-index: 200;
+} */
