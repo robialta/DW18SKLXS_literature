@@ -1,14 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 //Componen
-import ListCard from "../components/ListCard";
 import Nav from "../components/Nav";
-import { API } from "../config/api";
-import { UserContext } from "../context/userContext";
 
 const Home = () => {
-    const [state, dispatch] = useContext(UserContext);
     const history = useHistory();
     const [formData, setFormData] = useState({ keyword: "" });
 
@@ -35,6 +31,7 @@ const Home = () => {
                         <img
                             id="big-logo"
                             src="./assets/logo/literature-big.png"
+                            alt="bid-logo"
                         />
                     </div>
                     <form
@@ -69,6 +66,7 @@ const Home = () => {
                                     <img
                                         src="./assets/icon/search.png"
                                         className="mx-auto"
+                                        alt="search"
                                     />
                                 </button>
                             </div>

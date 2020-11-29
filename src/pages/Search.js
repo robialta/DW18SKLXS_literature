@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ListCard from "../components/ListCard";
 import Nav from "../components/Nav";
 import { API } from "../config/api";
@@ -7,12 +7,13 @@ import { showToast, ToastContext } from "../context/toastContext";
 import { UserContext } from "../context/userContext";
 
 const Search = () => {
-    const [toast, createToast] = useContext(ToastContext);
-    const [state, dispatch] = useContext(UserContext);
+    const [toast, createToast] = useContext(ToastContext); //eslint-disable-line no-unused-vars
+    const [state, dispatch] = useContext(UserContext); //eslint-disable-line no-unused-vars
     const [literatures, setLiteratures] = useState([]);
     const { title } = useParams();
     const [formData, setFormData] = useState({ keyword: title });
     const [years, setYears] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const { keyword } = formData;
     const handleChange = (e) => {
@@ -25,11 +26,14 @@ const Search = () => {
 
         if (!keyword) return;
         try {
+            setLoading(true);
             const res = await API.get(
                 `/search?title=${keyword}&public_year=${public_year}`
             );
             setLiteratures(res.data.data);
+            setLoading(false);
         } catch (err) {
+            setLoading(false);
             showToast(
                 () => createToast({ show: true, message: "SERVER ERROR" }),
                 () => createToast({ show: false })
@@ -39,6 +43,7 @@ const Search = () => {
 
     const loadData = async () => {
         try {
+            setLoading(true);
             const res = await API.get(
                 `/search?title=${title}&public_year=${""}`
             );
@@ -62,7 +67,9 @@ const Search = () => {
                 generatedYears.push(i);
             }
             setYears(generatedYears);
+            setLoading(false);
         } catch (err) {
+            setLoading(false);
             showToast(
                 () => createToast({ show: true, message: "SERVER ERROR" }),
                 () => createToast({ show: false })
@@ -72,6 +79,7 @@ const Search = () => {
 
     useEffect(() => {
         loadData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (
         <div>
@@ -117,6 +125,7 @@ const Search = () => {
                                     <img
                                         src="../assets/icon/search.png"
                                         className="mx-auto"
+                                        alt="search"
                                     />
                                 </button>
                             </div>
@@ -163,7 +172,18 @@ const Search = () => {
                                 </div>
                             </div>
                             <div className="col mx-auto pt-3">
-                                {literatures.length > 0 ? (
+                                {loading ? (
+                                    <div
+                                        style={{
+                                            marginTop: "200px",
+                                            maxWidth: "500px",
+                                            minWidth: "200px",
+                                        }}
+                                        className="mx-auto text-center"
+                                    >
+                                        Searching...
+                                    </div>
+                                ) : literatures.length > 0 ? (
                                     <ListCard
                                         literatures={literatures}
                                         maxCol="4"

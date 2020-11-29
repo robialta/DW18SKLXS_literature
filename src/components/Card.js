@@ -1,6 +1,5 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import Cover from "../static/img/literature-cover.png";
 
 export const Card = (props) => {
     const route = useHistory();
@@ -10,8 +9,7 @@ export const Card = (props) => {
     return (
         <div className="col mb-4 ">
             <div
-                className="p-3"
-                className="card "
+                className="card p-3"
                 style={{
                     border: "none",
                     width: "200px",
@@ -36,6 +34,7 @@ export const Card = (props) => {
                         backgroundColor: "white",
                         borderRadius: "10px",
                     }}
+                    alt="literature"
                 />
                 <div className="card-body px-0 py-2">
                     <div

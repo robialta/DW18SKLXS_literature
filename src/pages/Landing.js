@@ -1,13 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import SignUpModal from "../components/SignUpModal";
 import SignInModal from "../components/SignInModal";
 import LOGO from "../static/logo/main.png";
-import { ToastContext, showToast } from "../context/toastContext";
 import { UserContext } from "../context/userContext";
 
 const Landing = () => {
-    const [state, dispatch] = useContext(UserContext);
+    const [state, dispatch] = useContext(UserContext); //eslint-disable-line no-unused-vars
     const page = useHistory();
     if (state.isLogedIn) page.push("/home");
 
@@ -32,7 +31,7 @@ const Landing = () => {
                                 style={{ position: "relative", top: "11px" }}
                             >
                                 <Link className="navbar-brand" to="/home">
-                                    <img src={LOGO} />
+                                    <img src={LOGO} alt="logo" />
                                 </Link>
                             </div>
                         </nav>
@@ -58,7 +57,6 @@ const Landing = () => {
                                     style={{
                                         fontStyle: "italic",
                                         fontSize: "96px",
-                                        fontStyle: "italic",
                                         fontWeight: "700",
                                         fontFamily: "Times New Roman",
                                         lineHeight: "105px",

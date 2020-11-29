@@ -22,7 +22,8 @@ if (localStorage.token) setAuthToken(localStorage.token);
 
 function App() {
     const [state, dispatch] = useContext(UserContext);
-    const [toasState, toastDispatch] = useContext(ToastContext);
+    const [toasState, toastDispatch] = useContext(ToastContext); //eslint-disable-line no-unused-vars
+
     useEffect(() => {
         const loadUser = async () => {
             try {
@@ -38,6 +39,7 @@ function App() {
             }
         };
         loadUser();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (
         <Router>

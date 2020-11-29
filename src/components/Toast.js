@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 const Toast = (props) => {
-    const [show, setShow] = useState(props.show);
+    const [show, setShow] = useState(props.show); // eslint-disable-line no-unused-vars
     const [hide, setHide] = useState(true);
     useEffect(() => {
         setHide(false);

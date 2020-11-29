@@ -5,9 +5,9 @@ import { ToastContext, showToast } from "../context/toastContext";
 import { UserContext } from "../context/userContext";
 
 const SignInModal = () => {
-    const [toast, setToast] = useContext(ToastContext);
+    const [toast, setToast] = useContext(ToastContext); //eslint-disable-line no-unused-vars
     const history = useHistory();
-    const [state, dispatch] = useContext(UserContext);
+    const [state, dispatch] = useContext(UserContext); //eslint-disable-line no-unused-vars
     const [formData, setformData] = useState({
         email: "obyaltha@gmail.com",
         password: "Rr892195",

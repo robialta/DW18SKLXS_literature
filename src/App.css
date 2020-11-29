@@ -92,7 +92,7 @@
 #toast-show {
     /* min-width: 400px; */
     max-width: 700px;
-    position: absolute;
+    position: fixed;
     margin: auto;
     bottom: 100px;
     left: 100px;
@@ -113,7 +113,7 @@
 #toast-hide {
     /* min-width: 400px; */
     max-width: 700px;
-    position: absolute;
+    position: fixed;
     margin: auto;
     bottom: 100px;
     left: -50%;

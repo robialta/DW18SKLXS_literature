@@ -23,6 +23,7 @@ const Loader = () => {
                     transform: "translate(-50%, -50%)",
                 }}
                 src={Loading}
+                alt="loading"
             />
         </div>
     );

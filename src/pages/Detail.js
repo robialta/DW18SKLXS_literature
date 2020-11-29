@@ -8,8 +8,8 @@ import Download from "../static/icon/download.png";
 import { ToastContext, showToast } from "../context/toastContext";
 
 const Detail = () => {
-    const [state, dispatch] = useContext(UserContext);
-    const [toast, createToast] = useContext(ToastContext);
+    const [state, dispatch] = useContext(UserContext); // eslint-disable-line no-unused-vars
+    const [toast, createToast] = useContext(ToastContext); // eslint-disable-line no-unused-vars
     const [literature, setLiterature] = useState({});
     const [collections, setCollections] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -18,7 +18,6 @@ const Detail = () => {
 
     const { id } = useParams();
     const idUser = state.user.id;
-    console.log(id, idUser);
 
     const loadCollections = async () => {
         try {
@@ -124,6 +123,7 @@ const Detail = () => {
 
         loadCollections();
         loadDetailLiterature();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -154,16 +154,20 @@ const Detail = () => {
                         ) : (
                             <div className="row m-3 mt-5 mr-4">
                                 <div className="col-xl-3 px-2 pb-3 text-center">
-                                    <img
-                                        src={`https://res.cloudinary.com/robialta/image/upload/${literature.file}.png`}
-                                        style={{
-                                            maxWidth: "400px",
-                                            minWidth: "250px",
-                                            borderRadius: "7px",
-                                        }}
-                                        className="card-img-top "
-                                        alt="lb1"
-                                    />
+                                    {literature.file ? (
+                                        <img
+                                            src={`https://res.cloudinary.com/robialta/image/upload/${literature.file}.png`}
+                                            style={{
+                                                maxWidth: "400px",
+                                                minWidth: "250px",
+                                                borderRadius: "7px",
+                                            }}
+                                            className="card-img-top "
+                                            alt="lb1"
+                                        />
+                                    ) : (
+                                        "Loading..."
+                                    )}
                                 </div>
                                 <div
                                     className="col-lg-9 pr-0 "
@@ -350,6 +354,7 @@ const Detail = () => {
                                                 style={{
                                                     float: "right",
                                                 }}
+                                                alt="Download"
                                             />
                                         </button>
                                     </a>
@@ -378,6 +383,7 @@ const Detail = () => {
                                                 style={{
                                                     float: "right",
                                                 }}
+                                                alt="Collection"
                                             />
                                         </button>
                                     ) : (
@@ -403,6 +409,7 @@ const Detail = () => {
                                                 style={{
                                                     float: "right",
                                                 }}
+                                                alt="Collection"
                                             />
                                         </button>
                                     )}

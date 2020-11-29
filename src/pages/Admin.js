@@ -13,24 +13,22 @@ const Admin = () => {
     const [state, dispatch] = useContext(UserContext);
     const history = useHistory();
     const [selectedCategory, setSelectedCategory] = useState("All");
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false); // eslint-disable-line no-unused-vars
     const [canceling, setCanceling] = useState(false);
     const [aproving, setAproving] = useState(false);
     const [deleting, setDeleting] = useState(false);
-
-    if (state.user.type === "basic") history.push("/home");
 
     const loadData = async () => {
         try {
             setLoading(true);
             const res = await API.get("/literatures");
-            if (selectedCategory == "Aproved") {
+            if (selectedCategory === "Aproved") {
                 setLiteratures(
                     res.data.data.literatures.filter(
                         (literature) => literature.status === "Aproved"
                     )
                 );
-            } else if (selectedCategory == "Canceled") {
+            } else if (selectedCategory === "Canceled") {
                 setLiteratures(
                     res.data.data.literatures.filter(
                         (literature) => literature.status === "Canceled"
@@ -101,7 +99,15 @@ const Admin = () => {
     };
 
     useEffect(() => {
+        const abortController = new AbortController();
+        if (state.user.type === "basic") {
+            history.push("/home");
+            return function cleanup() {
+                abortController.abort();
+            };
+        }
         loadData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedCategory]);
     return (
         <div
@@ -132,7 +138,7 @@ const Admin = () => {
                         </div>
                         <div>
                             <div className="dropdown dropleft">
-                                <a
+                                <button
                                     className="dropdown-toggle"
                                     data-toggle="dropdown"
                                     aria-haspopup="true"
@@ -147,13 +153,13 @@ const Admin = () => {
                                             width: "50px",
                                         }}
                                     />
-                                </a>
+                                </button>
                                 <div
                                     className="dropdown-menu p-0"
                                     style={{ top: "20px", lineHeight: "60px" }}
                                     aria-labelledby="dropdownMenuLink"
                                 >
-                                    <a
+                                    <button
                                         onClick={() => logout()}
                                         className="dropdown-item px-3"
                                         style={{
@@ -170,9 +176,10 @@ const Admin = () => {
                                                 height: "25px",
                                                 width: "25px",
                                             }}
+                                            alt="Logout"
                                         />
                                         Log Out
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -221,7 +228,7 @@ const Admin = () => {
                                             className="dropdown-menu"
                                             aria-labelledby="dropdownMenuButton"
                                         >
-                                            <a
+                                            <button
                                                 onClick={() =>
                                                     setCategory("All")
                                                 }
@@ -229,8 +236,8 @@ const Admin = () => {
                                                 href="#"
                                             >
                                                 All
-                                            </a>
-                                            <a
+                                            </button>
+                                            <button
                                                 onClick={() =>
                                                     setCategory("Waiting")
                                                 }
@@ -238,8 +245,8 @@ const Admin = () => {
                                                 href="#"
                                             >
                                                 Waiting
-                                            </a>
-                                            <a
+                                            </button>
+                                            <button
                                                 onClick={() =>
                                                     setCategory("Aproved")
                                                 }
@@ -247,8 +254,8 @@ const Admin = () => {
                                                 href="#"
                                             >
                                                 Aproved
-                                            </a>
-                                            <a
+                                            </button>
+                                            <button
                                                 onClick={() =>
                                                     setCategory("Canceled")
                                                 }
@@ -256,7 +263,7 @@ const Admin = () => {
                                                 href="#"
                                             >
                                                 Canceled
-                                            </a>
+                                            </button>
                                         </div>
                                     </div>
                                 </span>
@@ -288,26 +295,26 @@ const Admin = () => {
                                         <th scope="row">{index + 1}</th>
                                         <td>{literature.user.fullName}</td>
                                         <td>{literature.ISBN}</td>
-                                        <a
-                                            href={`https://res.cloudinary.com/robialta/image/upload/v1606409471/${literature.file}.pdf`}
-                                            rel="noopener noreferrer"
-                                            download
-                                        >
-                                            <td style={{ color: "#0058DD" }}>
+                                        <td style={{ color: "#0058DD" }}>
+                                            <a
+                                                href={`https://res.cloudinary.com/robialta/image/upload/v1606409471/${literature.file}.pdf`}
+                                                rel="noopener noreferrer"
+                                                download
+                                            >
                                                 {literature.file.slice(
                                                     23,
                                                     literature.file.length
                                                 )}
-                                            </td>
-                                        </a>
+                                            </a>
+                                        </td>
                                         <td
                                             style={
-                                                literature.status == "Aproved"
+                                                literature.status === "Aproved"
                                                     ? {
                                                           color: "#0ACF83",
                                                           fontWeight: "700",
                                                       }
-                                                    : literature.status ==
+                                                    : literature.status ===
                                                       "Canceled"
                                                     ? {
                                                           color: "#FF0742",

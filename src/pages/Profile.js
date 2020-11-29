@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
 import { API } from "../config/api";
 import { UserContext } from "../context/userContext";
 import ListCard from "../components/ListCard";
@@ -13,7 +12,7 @@ import { ToastContext, showToast } from "../context/toastContext";
 
 const Profile = () => {
     const [state, dispatch] = useContext(UserContext);
-    const [toast, createToast] = useContext(ToastContext);
+    const [toast, createToast] = useContext(ToastContext); //eslint-disable-line no-unused-vars
     const [myLiteratures, setMyLiteratures] = useState([]);
     const [pendingLiteratures, setPendingLiteratures] = useState([]);
     const [uploadStatus, setUploadStatus] = useState("");
@@ -114,6 +113,7 @@ const Profile = () => {
             }
         };
         loadMyLiteratures();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (
         <div className="main-content row mx-auto" style={{ width: "91%" }}>

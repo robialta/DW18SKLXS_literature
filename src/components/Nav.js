@@ -4,16 +4,9 @@ import { useHistory } from "react-router-dom";
 import LOGO from "../static/logo/main.png";
 import { UserContext } from "../context/userContext";
 
-const hover = {
-    color: "#fff",
-    ":hover": {
-        color: "#ffffff",
-    },
-};
-
 const Nav = () => {
-    const [state, dispatch] = useContext(UserContext);
-    const history = useHistory();
+    const [state, dispatch] = useContext(UserContext); //eslint-disable-line no-unused-vars
+    const history = useHistory(); //eslint-disable-line no-unused-vars
     const page = window.location.pathname;
     const logOut = async () => {
         dispatch({
@@ -28,7 +21,7 @@ const Nav = () => {
                     style={{ position: "relative", top: "11px" }}
                 >
                     <Link className="navbar-brand" id="kanct" to="/home">
-                        <img src={LOGO} />
+                        <img src={LOGO} alt="logo" />
                     </Link>
                 </div>
                 <button
@@ -132,7 +125,7 @@ const Nav = () => {
                         style={{ position: "relative", top: "8px" }}
                     >
                         <Link className="navbar-brand" id="nav" to="/home">
-                            <img src={LOGO} />
+                            <img src={LOGO} alt="logo" />
                         </Link>
                     </div>
                 </div>

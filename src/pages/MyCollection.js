@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import Nav from "../components/Nav";
 import { API } from "../config/api";
 import { UserContext } from "../context/userContext";
@@ -7,8 +6,8 @@ import ListCard from "../components/ListCard";
 import { ToastContext, showToast } from "../context/toastContext";
 
 const MyCollection = () => {
-    const [state, dispatch] = useContext(UserContext);
-    const [toast, createToast] = useContext(ToastContext);
+    const [state, dispatch] = useContext(UserContext); //eslint-disable-line no-unused-vars
+    const [toast, createToast] = useContext(ToastContext); //eslint-disable-line no-unused-vars
     const [myCollections, setMyCollections] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -28,6 +27,7 @@ const MyCollection = () => {
             }
         };
         loadMyCollections();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (
         <div className="main-content row mx-auto" style={{ width: "91%" }}>

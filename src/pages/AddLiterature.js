@@ -1,15 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import Nav from "../components/Nav";
 import AttachIcon from "../static/icon/attachWhite.png";
-import AddBookIcon from "../static/icon/addbookwhite.png";
 import { API } from "../config/api";
 import { UserContext } from "../context/userContext";
-import { useHistory } from "react-router-dom";
 import { Formik } from "formik";
 import { ToastContext, showToast } from "../context/toastContext";
 
 function AddLiterature() {
-    const [toast, createToast] = useContext(ToastContext);
+    const [toast, createToast] = useContext(ToastContext); //eslint-disable-line no-unused-vars
     const [state] = useContext(UserContext);
     const [fileData, setFileData] = useState({ value: "" });
     const [errorFile, setErrorFile] = useState("");
