@@ -6,7 +6,7 @@ import { UserContext } from "../context/userContext";
 import { ToastContext, showToast } from "../context/toastContext";
 
 const SignUpModal = () => {
-    const [state, dispatch] = useContext(UserContext); //eslint-disable-line no-unused-vars
+    const [state, dispatch] = useContext(UserContext); // eslint-disable-line no-unused-vars
     const [toast, setToast] = useContext(ToastContext); //eslint-disable-line no-unused-vars
     const history = useHistory();
 

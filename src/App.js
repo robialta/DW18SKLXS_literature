@@ -24,20 +24,21 @@ function App() {
     const [state, dispatch] = useContext(UserContext);
     const [toasState, toastDispatch] = useContext(ToastContext); //eslint-disable-line no-unused-vars
 
+    const loadUser = async () => {
+        try {
+            const res = await API.get("/auth");
+            dispatch({
+                type: "USER_LOADED",
+                payload: res.data.data,
+            });
+        } catch (error) {
+            dispatch({
+                type: "AUTH_ERROR",
+            });
+        }
+    };
+
     useEffect(() => {
-        const loadUser = async () => {
-            try {
-                const res = await API.get("/auth");
-                dispatch({
-                    type: "USER_LOADED",
-                    payload: res.data.data,
-                });
-            } catch (error) {
-                dispatch({
-                    type: "AUTH_ERROR",
-                });
-            }
-        };
         loadUser();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

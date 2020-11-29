@@ -18,6 +18,12 @@ const Admin = () => {
     const [aproving, setAproving] = useState(false);
     const [deleting, setDeleting] = useState(false);
 
+    const logOut = () => {
+        dispatch({
+            type: "LOGOUT",
+        });
+    };
+
     const loadData = async () => {
         try {
             setLoading(true);
@@ -92,11 +98,6 @@ const Admin = () => {
             console.log(error);
         }
     };
-    const logout = () => {
-        dispatch({
-            type: "LOGOUT",
-        });
-    };
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -138,11 +139,12 @@ const Admin = () => {
                         </div>
                         <div>
                             <div className="dropdown dropleft">
-                                <button
+                                <div
                                     className="dropdown-toggle"
                                     data-toggle="dropdown"
                                     aria-haspopup="true"
                                     aria-expanded="false"
+                                    style={{ cursor: "pointer" }}
                                 >
                                     <img
                                         src={Avatar}
@@ -153,14 +155,14 @@ const Admin = () => {
                                             width: "50px",
                                         }}
                                     />
-                                </button>
+                                </div>
                                 <div
                                     className="dropdown-menu p-0"
                                     style={{ top: "20px", lineHeight: "60px" }}
                                     aria-labelledby="dropdownMenuLink"
                                 >
-                                    <button
-                                        onClick={() => logout()}
+                                    <div
+                                        onClick={() => logOut()}
                                         className="dropdown-item px-3"
                                         style={{
                                             cursor: "pointer",
@@ -179,7 +181,7 @@ const Admin = () => {
                                             alt="Logout"
                                         />
                                         Log Out
-                                    </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

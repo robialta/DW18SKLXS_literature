@@ -1,12 +1,10 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
 import LOGO from "../static/logo/main.png";
 import { UserContext } from "../context/userContext";
 
 const Nav = () => {
     const [state, dispatch] = useContext(UserContext); //eslint-disable-line no-unused-vars
-    const history = useHistory(); //eslint-disable-line no-unused-vars
     const page = window.location.pathname;
     const logOut = async () => {
         dispatch({
@@ -85,17 +83,14 @@ const Nav = () => {
                                 <div className="nav-text">Add Literature</div>
                             </Link>
                         </li>
-                        {/* {!state.loading ? (
+                        {state.user ? (
                             state.user.type === "admin" ? (
                                 <li className="nav-item">
                                     <Link
                                         className="nav-link "
                                         to="/admin"
                                         style={{
-                                            color:
-                                                page === "/addliterature"
-                                                    ? "#AF2E1C"
-                                                    : "#fff",
+                                            color: "white",
                                         }}
                                     >
                                         <div className="nav-text">
@@ -108,7 +103,7 @@ const Nav = () => {
                             )
                         ) : (
                             ""
-                        )} */}
+                        )}
 
                         <li className="nav-item ">
                             <div

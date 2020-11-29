@@ -55,9 +55,7 @@ const SignInModal = () => {
                         () => setToast({ show: false })
                     );
                 }
-                history.push(
-                    res.data.data.type === "admin" ? "/admin" : "/home"
-                );
+                history.push("/home");
 
                 dispatch({ type: "UNLOADING" });
             } else {

@@ -41,8 +41,10 @@ const reducer = (state, action) => {
             };
         case "LOGOUT":
             localStorage.removeItem("token");
+            window.location.href = "/";
             return {
                 isLogedIn: false,
+                loading: true,
             };
         default:
             throw new Error();
