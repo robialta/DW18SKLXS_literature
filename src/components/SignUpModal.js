@@ -89,7 +89,7 @@ const SignUpModal = () => {
                     () =>
                         setToast({
                             show: true,
-                            message: res.data.error.message,
+                            message: res.data.err.message,
                         }),
                     () => setToast({ show: false })
                 );
@@ -139,12 +139,12 @@ const SignUpModal = () => {
                     <div className="modal-body">
                         <Formik
                             initialValues={{
-                                email: "",
-                                password: "",
-                                fullName: "",
-                                gender: "",
-                                phone: "",
-                                address: "",
+                                email: "obyaltha@gmail.com",
+                                password: "Rr892195",
+                                fullName: "Robialta",
+                                gender: "male",
+                                phone: "083114416508",
+                                address: "Bungtiang",
                             }}
                             validate={(values) => validate(values)}
                             onSubmit={(

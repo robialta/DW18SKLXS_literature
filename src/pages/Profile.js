@@ -18,32 +18,45 @@ const Profile = () => {
     const [pendingLiteratures, setPendingLiteratures] = useState([]);
     const [uploadStatus, setUploadStatus] = useState("");
     const [uploaded, setUploaded] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [uploading, setUploading] = useState(false);
+    const [saving, setSaving] = useState(false);
 
     const changePhoto = async (e) => {
-        try {
-            const config = {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            };
+        if (e.target.files[0]) {
+            try {
+                setUploading(true);
+                const config = {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                };
 
-            const formData = new FormData();
-            formData.append("photo", e.target.files[0]);
+                const formData = new FormData();
+                formData.append("photo", e.target.files[0]);
 
-            const res = await API.post(`/uploadprofile`, formData, config);
-            setUploadStatus("uploaded");
-            setUploaded(res.data.data);
-        } catch (err) {
-            showToast(
-                () => createToast({ show: true, message: "SERVER ERROR" }),
-                () => createToast({ show: false })
-            );
+                const res = await API.post(
+                    `/uploadprofile/${state.user.id}`,
+                    formData,
+                    config
+                );
+                setUploadStatus("uploaded");
+                setUploaded(res.data.data);
+                setUploading(false);
+            } catch (err) {
+                setUploading(false);
+                showToast(
+                    () => createToast({ show: true, message: "SERVER ERROR" }),
+                    () => createToast({ show: false })
+                );
+            }
         }
     };
 
     const updateProfile = async (e) => {
         e.preventDefault();
         try {
+            setSaving(true);
             const config = {
                 headers: {
                     "Content-Type": "application/json",
@@ -58,6 +71,7 @@ const Profile = () => {
             });
             setUploadStatus("");
             setUploaded("");
+            setSaving(false);
             showToast(
                 () =>
                     createToast({
@@ -67,6 +81,7 @@ const Profile = () => {
                 () => createToast({ show: false })
             );
         } catch (err) {
+            setSaving(false);
             showToast(
                 () => createToast({ show: true, message: "SERVER ERROR" }),
                 () => createToast({ show: false })
@@ -77,6 +92,7 @@ const Profile = () => {
     useEffect(() => {
         const loadMyLiteratures = async () => {
             try {
+                setLoading(true);
                 const res = await API.get(`/myliteratures/${state.user.id}`);
                 setMyLiteratures(
                     res.data.data.filter(
@@ -88,7 +104,9 @@ const Profile = () => {
                         (literature) => !(literature.status === "Aproved")
                     )
                 );
+                setLoading(false);
             } catch (error) {
+                setLoading(false);
                 showToast(
                     () => createToast({ show: true, message: "SERVER ERROR" }),
                     () => createToast({ show: false })
@@ -135,9 +153,9 @@ const Profile = () => {
                                         className="col-xl-9"
                                         style={{ background: "" }}
                                     >
-                                        <ul class="list-group" style={{}}>
+                                        <ul className="list-group" style={{}}>
                                             <li
-                                                class="list-group-item"
+                                                className="list-group-item"
                                                 style={{
                                                     display: "flex",
                                                     backgroundColor: "#252525",
@@ -198,7 +216,7 @@ const Profile = () => {
                                                 </div>
                                             </li>
                                             <li
-                                                class="list-group-item"
+                                                className="list-group-item"
                                                 style={{
                                                     display: "flex",
                                                     backgroundColor: "#252525",
@@ -259,7 +277,7 @@ const Profile = () => {
                                                 </div>
                                             </li>
                                             <li
-                                                class="list-group-item"
+                                                className="list-group-item"
                                                 style={{
                                                     display: "flex",
                                                     backgroundColor: "#252525",
@@ -320,7 +338,7 @@ const Profile = () => {
                                                 </div>
                                             </li>
                                             <li
-                                                class="list-group-item"
+                                                className="list-group-item"
                                                 style={{
                                                     display: "flex",
                                                     backgroundColor: "#252525",
@@ -387,19 +405,19 @@ const Profile = () => {
                                         style={{ background: "" }}
                                     >
                                         <div
-                                            class=" mx-auto"
+                                            className=" mx-auto"
                                             id="photo-profile"
                                             style={
                                                 uploadStatus === "uploaded"
                                                     ? {
-                                                          backgroundImage: `url(http://localhost:5000/photos/${uploaded})`,
+                                                          backgroundImage: `url(https://res.cloudinary.com/robialta/image/upload/${uploaded})`,
                                                       }
                                                     : !state.user.profile
                                                     ? {
-                                                          backgroundImage: `url(http://localhost:5000/photos/default.png)`,
+                                                          backgroundImage: `url(https://res.cloudinary.com/robialta/image/upload/literature/photos/default_sr0fpp.png)`,
                                                       }
                                                     : {
-                                                          backgroundImage: `url(http://localhost:5000/photos/${state.user.profile})`,
+                                                          backgroundImage: `url(https://res.cloudinary.com/robialta/image/upload/${state.user.profile})`,
                                                       }
                                             }
                                         ></div>
@@ -409,6 +427,7 @@ const Profile = () => {
                                                 style={{ width: "100%" }}
                                             >
                                                 <button
+                                                    disabled={saving}
                                                     onClick={(e) =>
                                                         updateProfile(e)
                                                     }
@@ -419,9 +438,12 @@ const Profile = () => {
                                                         marginRight: "5px",
                                                     }}
                                                 >
-                                                    Save
+                                                    {saving
+                                                        ? "Saving..."
+                                                        : "Save"}
                                                 </button>
                                                 <button
+                                                    disabled={saving}
                                                     onClick={() =>
                                                         setUploadStatus("")
                                                     }
@@ -438,6 +460,7 @@ const Profile = () => {
                                         ) : (
                                             <div>
                                                 <button
+                                                    disabled={uploading}
                                                     className="btn dark btn-md  text-light my-3"
                                                     style={{
                                                         width: "227px",
@@ -453,7 +476,9 @@ const Profile = () => {
                                                             width: "100%",
                                                         }}
                                                     >
-                                                        Change Photo Profil
+                                                        {uploading
+                                                            ? "Processing..."
+                                                            : "Change Photo Profil"}
                                                     </label>
                                                 </button>
                                             </div>
@@ -464,7 +489,7 @@ const Profile = () => {
                                             type="file"
                                             id="profil"
                                             onChange={(e) => changePhoto(e)}
-                                            accept="image/x-png,image/gif,image/jpeg"
+                                            accept="image/x-png,image/jpeg"
                                         />
                                     </div>
                                 </div>
@@ -490,7 +515,17 @@ const Profile = () => {
                     </div>
                     <div className="row">
                         <div className="col-md-12 px-0">
-                            {myLiteratures.length > 0 ? (
+                            {loading ? (
+                                <div
+                                    style={{
+                                        maxWidth: "500px",
+                                        minWidth: "200px",
+                                    }}
+                                    className="mx-auto text-center"
+                                >
+                                    Loading...
+                                </div>
+                            ) : myLiteratures.length > 0 ? (
                                 <ListCard
                                     literatures={myLiteratures}
                                     maxCol="5"
@@ -527,7 +562,17 @@ const Profile = () => {
                     </div>
                     <div className="row">
                         <div className="col-md-12 px-0">
-                            {pendingLiteratures.length > 0 ? (
+                            {loading ? (
+                                <div
+                                    style={{
+                                        maxWidth: "500px",
+                                        minWidth: "200px",
+                                    }}
+                                    className="mx-auto text-center mb-3"
+                                >
+                                    Loading...
+                                </div>
+                            ) : pendingLiteratures.length > 0 ? (
                                 <ListCard
                                     literatures={pendingLiteratures}
                                     maxCol="5"
@@ -538,7 +583,7 @@ const Profile = () => {
                                         maxWidth: "500px",
                                         minWidth: "200px",
                                     }}
-                                    className="mx-auto text-center"
+                                    className="mx-auto text-center mb-3"
                                 >
                                     You don't have pending literatures yet!
                                 </div>

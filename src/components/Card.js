@@ -8,10 +8,10 @@ export const Card = (props) => {
         route.push(`/detail/${props.literature.id}`);
     };
     return (
-        <div class="col mb-4 ">
+        <div className="col mb-4 ">
             <div
                 className="p-3"
-                class="card "
+                className="card "
                 style={{
                     border: "none",
                     width: "200px",
@@ -28,7 +28,7 @@ export const Card = (props) => {
                 }
             >
                 <img
-                    src={Cover}
+                    src={`https://res.cloudinary.com/robialta/image/upload/v1606405407/${props.literature.file}.png`}
                     style={{
                         width: "200px",
 
@@ -37,7 +37,7 @@ export const Card = (props) => {
                         borderRadius: "10px",
                     }}
                 />
-                <div class="card-body px-0 py-2">
+                <div className="card-body px-0 py-2">
                     <div
                         style={{
                             fontFamily: "Times New Roman",
@@ -50,7 +50,7 @@ export const Card = (props) => {
                     </div>
                 </div>
                 <div
-                    class="card-footer bg-transparent p-0"
+                    className="card-footer bg-transparent p-0"
                     style={{
                         color: "#929292",
                         border: "none",

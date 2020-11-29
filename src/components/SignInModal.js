@@ -42,7 +42,7 @@ const SignInModal = () => {
                         type: "USER_LOADED",
                         payload: res.data.data,
                     });
-                } catch (error) {
+                } catch (err) {
                     dispatch({
                         type: "AUTH_ERROR",
                     });
@@ -50,7 +50,7 @@ const SignInModal = () => {
                         () =>
                             setToast({
                                 show: true,
-                                message: res.data.error.message,
+                                message: res.data.err.message,
                             }),
                         () => setToast({ show: false })
                     );
@@ -65,7 +65,7 @@ const SignInModal = () => {
                     () =>
                         setToast({
                             show: true,
-                            message: res.data.error.message,
+                            message: res.data.err.message,
                         }),
                     () => setToast({ show: false })
                 );
@@ -76,7 +76,7 @@ const SignInModal = () => {
 
                 dispatch({ type: "UNLOADING" });
             }
-        } catch (error) {
+        } catch (err) {
             dispatch({
                 type: "LOGIN_FAILED",
             });

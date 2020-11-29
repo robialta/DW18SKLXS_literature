@@ -23,7 +23,6 @@ if (localStorage.token) setAuthToken(localStorage.token);
 function App() {
     const [state, dispatch] = useContext(UserContext);
     const [toasState, toastDispatch] = useContext(ToastContext);
-
     useEffect(() => {
         const loadUser = async () => {
             try {

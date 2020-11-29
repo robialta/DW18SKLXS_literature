@@ -13,11 +13,16 @@ const Admin = () => {
     const [state, dispatch] = useContext(UserContext);
     const history = useHistory();
     const [selectedCategory, setSelectedCategory] = useState("All");
+    const [loading, setLoading] = useState(false);
+    const [canceling, setCanceling] = useState(false);
+    const [aproving, setAproving] = useState(false);
+    const [deleting, setDeleting] = useState(false);
+
     if (state.user.type === "basic") history.push("/home");
-    console.log(selectedCategory);
 
     const loadData = async () => {
         try {
+            setLoading(true);
             const res = await API.get("/literatures");
             if (selectedCategory == "Aproved") {
                 setLiteratures(
@@ -41,7 +46,9 @@ const Admin = () => {
             } else {
                 setLiteratures(res.data.data.literatures);
             }
+            setLoading(false);
         } catch (err) {
+            setLoading(false);
             console.log(err);
         }
     };
@@ -51,31 +58,39 @@ const Admin = () => {
 
     const cancelLiterature = async (literature) => {
         try {
+            setCanceling(true);
             let body = literature;
             body.status = "Canceled";
             await API.patch(`/literature/${literature.id}`, body);
             loadData();
+            setCanceling(false);
         } catch (error) {
+            setCanceling(false);
             console.log(error);
         }
     };
 
     const aproveLiterature = async (literature) => {
         try {
+            setAproving(true);
             let body = literature;
             body.status = "Aproved";
             await API.patch(`/literature/${literature.id}`, body);
             loadData();
+            setAproving(false);
         } catch (error) {
+            setAproving(false);
             console.log(error);
         }
     };
     const deleteLiterature = async (literature) => {
         try {
-            let body = literature;
+            setDeleting(true);
             await API.delete(`/literature/${literature.id}`);
             loadData();
+            setDeleting(false);
         } catch (error) {
+            setDeleting(false);
             console.log(error);
         }
     };
@@ -118,7 +133,7 @@ const Admin = () => {
                         <div>
                             <div className="dropdown dropleft">
                                 <a
-                                    classname="dropdown-toggle"
+                                    className="dropdown-toggle"
                                     data-toggle="dropdown"
                                     aria-haspopup="true"
                                     aria-expanded="false"
@@ -191,9 +206,9 @@ const Admin = () => {
                                         textAlign: "left",
                                     }}
                                 >
-                                    <div class="dropdown">
+                                    <div className="dropdown">
                                         <button
-                                            class="btn btn-secondary dropdown-toggle"
+                                            className="btn btn-secondary dropdown-toggle"
                                             type="button"
                                             id="dropdownMenuButton"
                                             data-toggle="dropdown"
@@ -203,14 +218,14 @@ const Admin = () => {
                                             {selectedCategory}
                                         </button>
                                         <div
-                                            class="dropdown-menu"
+                                            className="dropdown-menu"
                                             aria-labelledby="dropdownMenuButton"
                                         >
                                             <a
                                                 onClick={() =>
                                                     setCategory("All")
                                                 }
-                                                class="dropdown-item"
+                                                className="dropdown-item"
                                                 href="#"
                                             >
                                                 All
@@ -219,7 +234,7 @@ const Admin = () => {
                                                 onClick={() =>
                                                     setCategory("Waiting")
                                                 }
-                                                class="dropdown-item"
+                                                className="dropdown-item"
                                                 href="#"
                                             >
                                                 Waiting
@@ -228,7 +243,7 @@ const Admin = () => {
                                                 onClick={() =>
                                                     setCategory("Aproved")
                                                 }
-                                                class="dropdown-item"
+                                                className="dropdown-item"
                                                 href="#"
                                             >
                                                 Aproved
@@ -237,7 +252,7 @@ const Admin = () => {
                                                 onClick={() =>
                                                     setCategory("Canceled")
                                                 }
-                                                class="dropdown-item"
+                                                className="dropdown-item"
                                                 href="#"
                                             >
                                                 Canceled
@@ -274,13 +289,15 @@ const Admin = () => {
                                         <td>{literature.user.fullName}</td>
                                         <td>{literature.ISBN}</td>
                                         <a
-                                            href={`http://localhost:5000/literatures/${literature.file}`}
-                                            target="_blank"
+                                            href={`https://res.cloudinary.com/robialta/image/upload/v1606409471/${literature.file}.pdf`}
                                             rel="noopener noreferrer"
                                             download
                                         >
                                             <td style={{ color: "#0058DD" }}>
-                                                {literature.file}
+                                                {literature.file.slice(
+                                                    23,
+                                                    literature.file.length
+                                                )}
                                             </td>
                                         </a>
                                         <td
@@ -288,19 +305,16 @@ const Admin = () => {
                                                 literature.status == "Aproved"
                                                     ? {
                                                           color: "#0ACF83",
-
                                                           fontWeight: "700",
                                                       }
                                                     : literature.status ==
                                                       "Canceled"
                                                     ? {
                                                           color: "#FF0742",
-
                                                           fontWeight: "700",
                                                       }
                                                     : {
                                                           color: "#F7941E",
-
                                                           fontWeight: "700",
                                                       }
                                             }
@@ -318,12 +332,17 @@ const Admin = () => {
                                               "Canceled" ? (
                                                 <div>
                                                     <button
+                                                        disabled={
+                                                            deleting ||
+                                                            canceling ||
+                                                            aproving
+                                                        }
                                                         onClick={() =>
                                                             deleteLiterature(
                                                                 literature
                                                             )
                                                         }
-                                                        className="btn btn-dark mr-3"
+                                                        className="btn btn-dark mx-2"
                                                         style={{
                                                             width: "100px",
                                                             backgroundColor:
@@ -333,15 +352,22 @@ const Admin = () => {
                                                             color: "#161616",
                                                         }}
                                                     >
-                                                        Delete
+                                                        {deleting
+                                                            ? "Deleting..."
+                                                            : "Delete"}
                                                     </button>
                                                     <button
+                                                        disabled={
+                                                            deleting ||
+                                                            canceling ||
+                                                            aproving
+                                                        }
                                                         onClick={() =>
                                                             aproveLiterature(
                                                                 literature
                                                             )
                                                         }
-                                                        className="btn btn-dark ml-2"
+                                                        className="btn btn-dark mx-2"
                                                         style={{
                                                             width: "100px",
 
@@ -352,18 +378,25 @@ const Admin = () => {
                                                             color: "#161616",
                                                         }}
                                                     >
-                                                        Approve
+                                                        {aproving
+                                                            ? "Aproving..."
+                                                            : "Approve"}
                                                     </button>
                                                 </div>
                                             ) : (
                                                 <div>
                                                     <button
+                                                        disabled={
+                                                            deleting ||
+                                                            canceling ||
+                                                            aproving
+                                                        }
                                                         onClick={() =>
                                                             cancelLiterature(
                                                                 literature
                                                             )
                                                         }
-                                                        className="btn btn-dark mr-3"
+                                                        className="btn btn-dark mx-2"
                                                         style={{
                                                             width: "100px",
                                                             backgroundColor:
@@ -373,15 +406,22 @@ const Admin = () => {
                                                             color: "#161616",
                                                         }}
                                                     >
-                                                        Cancel
+                                                        {canceling
+                                                            ? "Canceling..."
+                                                            : "Cancel"}
                                                     </button>
                                                     <button
+                                                        disabled={
+                                                            deleting ||
+                                                            canceling ||
+                                                            aproving
+                                                        }
                                                         onClick={() =>
                                                             aproveLiterature(
                                                                 literature
                                                             )
                                                         }
-                                                        className="btn btn-dark ml-2"
+                                                        className="btn btn-dark mx-2"
                                                         style={{
                                                             width: "100px",
 
@@ -392,7 +432,9 @@ const Admin = () => {
                                                             color: "#161616",
                                                         }}
                                                     >
-                                                        Approve
+                                                        {aproving
+                                                            ? "Aproving..."
+                                                            : "Approve"}
                                                     </button>
                                                 </div>
                                             )}

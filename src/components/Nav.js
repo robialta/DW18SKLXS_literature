@@ -19,8 +19,6 @@ const Nav = () => {
         dispatch({
             type: "LOGOUT",
         });
-
-        history.push("/");
     };
     return (
         <div className="navbar-wrap" style={{ width: "100%" }}>
@@ -94,6 +92,31 @@ const Nav = () => {
                                 <div className="nav-text">Add Literature</div>
                             </Link>
                         </li>
+                        {/* {!state.loading ? (
+                            state.user.type === "admin" ? (
+                                <li className="nav-item">
+                                    <Link
+                                        className="nav-link "
+                                        to="/admin"
+                                        style={{
+                                            color:
+                                                page === "/addliterature"
+                                                    ? "#AF2E1C"
+                                                    : "#fff",
+                                        }}
+                                    >
+                                        <div className="nav-text">
+                                            Verification
+                                        </div>
+                                    </Link>
+                                </li>
+                            ) : (
+                                ""
+                            )
+                        ) : (
+                            ""
+                        )} */}
+
                         <li className="nav-item ">
                             <div
                                 className="nav-link text-white"

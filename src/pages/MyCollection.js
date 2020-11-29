@@ -4,22 +4,30 @@ import Nav from "../components/Nav";
 import { API } from "../config/api";
 import { UserContext } from "../context/userContext";
 import ListCard from "../components/ListCard";
+import { ToastContext, showToast } from "../context/toastContext";
 
 const MyCollection = () => {
     const [state, dispatch] = useContext(UserContext);
+    const [toast, createToast] = useContext(ToastContext);
     const [myCollections, setMyCollections] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        const loadMyLibrary = async () => {
+        const loadMyCollections = async () => {
             try {
+                setLoading(true);
                 const res = await API.get(`/mycollections/${state.user.id}`);
                 setMyCollections(res.data.data);
-                console.log(res.data.data);
+                setLoading(false);
             } catch (err) {
-                console.log(err);
+                setLoading(false);
+                showToast(
+                    () => createToast({ show: true, message: "SERVER ERROR" }),
+                    () => createToast({ show: false })
+                );
             }
         };
-        loadMyLibrary();
+        loadMyCollections();
     }, []);
     return (
         <div className="main-content row mx-auto" style={{ width: "91%" }}>
@@ -46,7 +54,17 @@ const MyCollection = () => {
                 <div className="col-md-12  px-0">
                     <div className="row">
                         <div className="col-sm-12 pt-3 px-0">
-                            {myCollections.length > 0 ? (
+                            {loading ? (
+                                <div
+                                    style={{
+                                        maxWidth: "500px",
+                                        minWidth: "200px",
+                                    }}
+                                    className="mx-auto text-center"
+                                >
+                                    Loading...
+                                </div>
+                            ) : myCollections.length > 0 ? (
                                 <ListCard
                                     literatures={myCollections}
                                     maxCol="5"

@@ -11,22 +11,33 @@ import { ToastContext, showToast } from "../context/toastContext";
 function AddLiterature() {
     const [toast, createToast] = useContext(ToastContext);
     const [state] = useContext(UserContext);
-    const [fileData, setFileData] = useState({});
+    const [fileData, setFileData] = useState({ value: "" });
     const [errorFile, setErrorFile] = useState("");
     const [publicationType, setPublicationType] = useState("text");
+    const [loading, setLoading] = useState(false);
 
     const setFile = (e) => {
-        setFileData({ value: "", name: "", size: "", type: "" });
-        if (Math.floor(e.target.files[0].size) / 1000 > 5000)
-            return setErrorFile("Maximum File SIze 5 MB");
-        setFileData({
-            value: e.target.value,
-            name: e.target.files[0].name,
-            size: Math.floor(e.target.files[0].size) / 1000,
-            type: e.target.files[0].type,
-            literature: e.target.files[0],
-        });
-        setErrorFile("");
+        if (e.target.files[0]) {
+            setFileData({ value: "", name: "", size: "", type: "" });
+            if (Math.floor(e.target.files[0].size) / 1000 > 5000)
+                return setErrorFile("Maximum File SIze 5 MB");
+            setFileData({
+                value: e.target.value,
+                name: e.target.files[0].name,
+                size: Math.floor(e.target.files[0].size) / 1000,
+                type: e.target.files[0].type,
+                literature: e.target.files[0],
+            });
+            setErrorFile("");
+        } else {
+            setFileData({
+                value: "",
+                name: "",
+                size: "",
+                type: "",
+                literature: "",
+            });
+        }
     };
 
     const validate = (values) => {
@@ -46,15 +57,11 @@ function AddLiterature() {
         return errors;
     };
 
-    // const checkIvalidFile = () => {
-    //     if (invalidFile) return setInvalidFile(true);
-    // };
-
     const addLiterature = async (values, setSubmitting, resetForm) => {
         if (!fileData.value) return setErrorFile("File Required");
-        console.log(!fileData.value);
-
+        setLoading(true);
         setSubmitting();
+
         const config = {
             headers: {
                 "Content-Type": "multipart/form-data",
@@ -67,7 +74,7 @@ function AddLiterature() {
         formData.append("title", values.title);
         formData.append("publication", values.publication);
         formData.append("pages", values.pages);
-        formData.append("ISBN", values.ISBN);
+        formData.append("isbn", values.ISBN);
         formData.append("author", values.author);
         formData.append("userId", values.userId);
         formData.append("literature", values.literature);
@@ -82,6 +89,7 @@ function AddLiterature() {
                 type: "",
                 literature: "",
             });
+            setLoading(false);
             showToast(
                 () =>
                     createToast({
@@ -92,6 +100,7 @@ function AddLiterature() {
                 () => createToast({ show: false })
             );
         } catch (err) {
+            setLoading(false);
             showToast(
                 () => createToast({ show: true, message: "SERVER ERROR" }),
                 () => createToast({ show: false })
@@ -284,7 +293,11 @@ function AddLiterature() {
                                                 </span>
                                                 <br></br>
                                                 <span className="text-success">
-                                                    TYPE : {fileData.type}
+                                                    TYPE :{" "}
+                                                    {fileData.type.slice(
+                                                        -3,
+                                                        fileData.type.length
+                                                    )}
                                                 </span>
                                             </small>
                                         )}
@@ -293,6 +306,7 @@ function AddLiterature() {
 
                                 <div className="form-group mb-2 text-right">
                                     <button
+                                        disabled={loading}
                                         type="text"
                                         className="btn text-white"
                                         style={{
@@ -306,11 +320,14 @@ function AddLiterature() {
                                             top: "-25px",
                                         }}
                                     >
-                                        Add Literature
+                                        {loading
+                                            ? "Uploding..."
+                                            : "Add Literature"}
                                     </button>
                                 </div>
 
                                 <input
+                                    disabled={loading}
                                     accept="application/pdf"
                                     type="file"
                                     id="fileInput"
